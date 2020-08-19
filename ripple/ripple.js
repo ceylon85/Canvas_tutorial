@@ -24,9 +24,9 @@ export class Ripple {
       if(this.radius < this.maxRadius){
           this.radius += this.speed;
       }
-
+      //ripple fill color
       ctx.beginPath();
-      ctx.fillStyle = '#00ff00';
+      ctx.fillStyle = '#0000';
       ctx.arc(this.x, this.y, this.radius, Math.PI * 2, false);
       ctx.fill();
   }
