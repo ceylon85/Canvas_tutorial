@@ -1,5 +1,6 @@
 import { Ripple } from "./ripple.js";
 import { Dot } from "./dot.js";
+import { collide, getBWValue } from "./utils.js";
 
 class App {
   constructor() {
@@ -9,7 +10,6 @@ class App {
 
     this.tmpCanvas = document.createElement("canvas");
     this.tmpCtx = this.tmpCanvas.getContext("2d");
-
     this.pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
     this.ripple = new Ripple();
@@ -17,8 +17,8 @@ class App {
     window.addEventListener("resize", this.resize.bind(this), false);
     this.resize();
 
-    this.radius = 10;
-    this.pixelSize = 30;
+    this.radius = 6;
+    this.pixelSize = 12;
     this.dots = [];
 
     this.isLoaded = false;
@@ -30,7 +30,7 @@ class App {
     };
 
     this.image = new Image();
-    this.image.src = "./img/goah2.jpg";
+    this.image.src = "./img/goah1.jpg";
     this.image.onload = () => {
       this.isLoaded = true;
       this.drawImage();
@@ -53,9 +53,11 @@ class App {
     this.tmpCanvas.height = this.stageHeight;
 
     this.ripple.resize(this.stageWidth, this.stageHeight);
+
     if (this.isLoaded) {
       this.drawImage();
     }
+
   }
 
   drawImage() {
@@ -74,8 +76,9 @@ class App {
       this.imgPos.height = Math.round(
         this.image.height * (this.stageWidth / this.image.width)
       );
-      this.imgPos.y = Math.round((this.stageWidth - this.imgPos.height) / 2);
+      this.imgPos.y = Math.round((this.stageHeight - this.imgPos.height) / 2);
     }
+
     this.ctx.drawImage(
       this.image,
       0,
@@ -106,6 +109,7 @@ class App {
       this.stageWidth,
       this.stageHeight
     );
+
     this.drawDots();
   }
 
@@ -119,14 +123,17 @@ class App {
       const y = (i + 0.5) * this.pixelSize;
       const pixelY = Math.max(Math.min(y, this.stageHeight), 0);
 
-      for (let i = 0; j < this.columns; j++) {
+      for (let j = 0; j < this.columns; j++) {
         const x = (j + 0.5) * this.pixelSize;
         const pixelX = Math.max(Math.min(x, this.stageWidth), 0);
 
         const pixelIndex = (pixelX + pixelY * this.stageWidth) * 4;
-        const red = this.imgData[pixelIndex + 0];
-        const green = this.imgData[pixelIndex + 1];
-        const blue = this.imgData[pixelIndex + 2];
+
+        const red = this.imgData.data[pixelIndex + 0];
+        const green = this.imgData.data[pixelIndex + 1];
+        const blue = this.imgData.data[pixelIndex + 2];
+        // BWvalue 적용하려면 scale을 추가
+        //const scale = getBWValue(red, green, blue, false);
 
         const dot = new Dot(
           x,
@@ -136,25 +143,42 @@ class App {
           red,
           green,
           blue
+          //scale
         );
-        this.dots.push(dot);
-      }
 
+        if (dot.targetRadius > 0.1) {
+          this.dots.push(dot);
+        }
+
+      }
     }
   }
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this));
 
+    //this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+
     this.ripple.animate(this.ctx);
 
-    for(let i = 0; i< this.dots.length; i++){
-        const dot = this.dots[i];
+    for (let i = 0; i < this.dots.length; i++) {
+      const dot = this.dots[i];
+      
+      if (
+        collide(dot.x, dot.y, this.ripple.x, this.ripple.y, this.ripple.radius)
+      ) {
+        dot.animate(this.ctx);
+      }
+
     }
   }
 
   onClick(e) {
     this.ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+
+    for (let i = 0; i < this.dots.length; i++) {
+      this.dots[i].reset();
+    }
 
     this.ctx.drawImage(
       this.image,
