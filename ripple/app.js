@@ -30,7 +30,7 @@ class App {
     };
 
     this.image = new Image();
-    this.image.src = "./img/goah1.jpg";
+    this.image.src = "./img/" + this.getRandomImage();
     this.image.onload = () => {
       this.isLoaded = true;
       this.drawImage();
@@ -57,7 +57,11 @@ class App {
     if (this.isLoaded) {
       this.drawImage();
     }
-
+  }
+  
+  getRandomImage() {
+    var images = ["goah1.jpg", "goah2.jpg", "goah3.jpg"];
+    return images[Math.floor(Math.random() * images.length)];
   }
 
   drawImage() {
@@ -149,7 +153,6 @@ class App {
         if (dot.targetRadius > 0.1) {
           this.dots.push(dot);
         }
-
       }
     }
   }
@@ -163,13 +166,12 @@ class App {
 
     for (let i = 0; i < this.dots.length; i++) {
       const dot = this.dots[i];
-      
+
       if (
         collide(dot.x, dot.y, this.ripple.x, this.ripple.y, this.ripple.radius)
       ) {
         dot.animate(this.ctx);
       }
-
     }
   }
 
