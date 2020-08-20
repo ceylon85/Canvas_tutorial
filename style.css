@@ -15,6 +15,8 @@ body{
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background: linear-gradient(to bottom, #dce0e9 15%, #94dfff 60%);
+
 }
 
 canvas{
@@ -22,79 +24,272 @@ canvas{
     height: 100%;
 }
 
-ul{
-    list-style: none;
-    text-align: left;
-}
-
-a{
-    text-decoration: none;
-    font-size: 1rem;
-    color: brown;
-}
 
 .mycanvas{
-    background-color: #94bcdf;
-    height: 500px;
+    background: linear-gradient(to bottom, #f6f8fc 50%, #94dfff 90%);
+    height: 230px;
     width: 500px;
     position: absolute;
     margin: auto;
     left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;   
+    right: 1;
+    top: 1;
+    bottom: 1;   
+    z-index: 3;
+    border: 1px solid #f6f8fc;
+    border-top-color:  #ddf1f9;
+    
+}
+.mycanvas ul{
+    list-style: none;
+    text-align: left;
+    cursor: pointer;
+    width: 50%;
 }
 
-.ball{
-    background-color:  #ff1a66;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    position: relative;
-    top: 100px;
-    left: 240px;
-    animation: bounce 1s infinite;
+        
+.mycanvas a{
+    text-decoration: none;
+    font-size: 1rem;
+    color: rgb(249, 110, 110);
 }
 
-@keyframes bounce{
-    10%{
-        height: 50px;
-        width: 50px;
-    }
-    30%{
-        height: 50px;
-        width: 40px;
-    }
-    50%{
-        height: 30px;
-        width: 57px;
-        transform: translateY(240px);
-    }
-    75%{
-        height: 50px;
-        width: 57px;
-    }
-    100%{
-        transform: translateY(0px);
-    }
-}
+/* =======Ball Animation=============== */
 .container{
     height: 57px;
     width: 50px;
 }
+
+.ball{
+    background-color:  #eae712;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    position: relative;
+    bottom: 252px;
+    left: 430px;
+    overflow: hidden;
+    animation: bounce 1.2s linear infinite;
+}
+
+.ball:before {
+    content: '';
+    position: absolute;
+    width:100%;
+    height: 100%;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: transparent;
+    border: 3px solid #fff;
+    right: -65%;
+    filter: blur(1px);
+}
+
+.ball:after {
+    content: '';
+    position: absolute;
+    width:100%;
+    height: 100%;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: transparent;
+    border: 3px solid #fff;
+    left: -65%;
+    filter: blur(1px);
+}
+
+@keyframes bounce{
+    0%{
+        /* height: 50px;
+        width: 50px; */
+        transform: translateY(100px) rotate(0deg);
+        background-color: rgb(157, 13, 13);
+    }
+    30%{
+        /* height: 50px;
+        width: 40px; */
+    }
+    
+    50%{
+        /* height: 30px;
+        width: 57px; */
+        transform: translateY(240px) rotate(180deg);
+        background-color: rgb(231, 13, 13);
+    }
+    75%{
+        /* height: 50px;
+        width: 57px; */
+        background-color: #fff;
+    }
+    100%{
+        transform: translateY(100px)rotate(360deg);
+        background-color: #fff;
+        
+    }
+}
+
 .shadow{
     background-color: rgba(8,8,8,0.05);
     height: 10px;
     width: 65px;
     border-radius: 50%;
     position: relative;
-    top:310px;
-    left: 232px;
-    animation: shrink 1s infinite;
+    top: -21px;
+    left: 422px;
+    animation: shrink 1.2s infinite;
 }
 
 @keyframes shrink{
     50%{
         transform: scaleX(0.5);
         }
+}
+
+/* =======Ship Animation=============== */
+.container2{
+    width: 100%;
+    height: 100%;
+}
+
+.canvas {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.grey {
+    fill: #E6E6E6;
+}
+
+.pink {
+    fill: #FF6666;
+}
+
+#ship{
+    width: 10%;
+    height: auto;
+    position: absolute;
+    top: 40%;
+    left: -10%;
+    z-index: 1;
+}
+
+/* =======Cloud & Sun Animation=============== */
+.container3{
+    position: absolute;
+    top: 15%;
+    left: 70%;
+    transform: translate(-30%, 30%);
+}
+
+.cloud{
+    position: relative;
+    width: 300px;
+    height: 100px;
+    border-radius: 50px;
+    background: #f8eeee;
+    animation: move 6s linear infinite;
+}
+
+.cloud:before{
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 45px; 
+    background: #f8eeee;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+}
+.cloud:after{
+    content: '';
+    position: absolute;
+    top: -78%;
+    left: 103px; 
+    background: #f8eeee;
+    width: 150px;
+    height:150px;
+    border-radius: 50%;
+
+}
+
+@keyframes move {
+    0%{
+        transform: translate(0);
+    }
+    50%{
+        transform: translate(50px);
+    }
+    100%{
+        transform: translate(0);
+    }
+}
+
+.sun{
+    position: absolute;
+    top: -100px;
+    left: 65px;
+    margin:0;
+    padding: 0;
+    width: 100px;
+    height: 100px;
+    background: #ffe208;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(118, 118, 15, 0.5);
+    z-index: -1;
+    animation: animate 20s linear infinite;
+    
+}
+
+.sun li{
+    list-style: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 3px;
+    background: #ffe208;
+    box-shadow: 0 0 15px rgba(226, 226, 110, 0.5);
+    border-radius: 50%;
+}
+
+.sun li:nth-child(1){
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+.sun li:nth-child(2){
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+.sun li:nth-child(3){
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.sun li:nth-child(4){
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+.sun li:nth-child(5){
+    transform: translate(-50%, -50%) rotate(22.5deg);
+}
+.sun li:nth-child(6){
+    transform: translate(-50%, -50%) rotate(-22.5deg);
+}
+.sun li:nth-child(7){
+    transform: translate(-50%, -50%) rotate(67.5deg);
+}
+.sun li:nth-child(8){
+    transform: translate(-50%, -50%) rotate(-67.5deg);
+}
+
+@keyframes animate{
+    0%{
+        transform: rotate(0deg);
+    }
+    50%{
+        transform: rotate(180deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
 }
