@@ -111,7 +111,7 @@
         wave3[x] = wave3[x - 1];
       }
 
-      waves[x] = wave[x] + wave2[x] + wave3[x] + screenHeight / 2;
+      waves[x] = wave[x] + wave2[x] + wave3[x] + screenHeight /1.65;
     }
   }
 
